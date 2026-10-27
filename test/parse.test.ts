@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { ConnectorError } from "@faltasmas/connectors";
-import { buildReport, extractGuidAlumno, isLoginPage, parseAbsenceGrid } from "../src/parse";
+import { buildReport, extractGuidAlumno, extractHiddenPairs, isLoginPage, parseAbsenceGrid } from "../src/parse";
 
 const fx = (n: string) => readFileSync(new URL(`./fixtures/${n}`, import.meta.url), "utf8");
 const GUID = "00000000-0000-0000-0000-000000000000";
@@ -88,4 +88,11 @@ test("buildReport sums hours and stamps syncedAt as an ISO string", () => {
   expect(r.totalHours).toBe(5.3);
   expect(r.syncedAt).toBe("2026-10-27T10:00:00.000Z");
   expect(r.subjects).toHaveLength(3);
+});
+
+describe("extractHiddenPairs", () => {
+  test("extractHiddenPairs handles either attribute order and keeps duplicates", () => {
+    const html = `<input type="hidden" name="a" value="1&amp;2" /><input name="b" type="hidden" value="x&quot;y" /><input name="a" type="hidden" /><input type="text" name="c" value="no" />`;
+    expect(extractHiddenPairs(html)).toEqual([["a", "1&2"], ["b", 'x"y'], ["a", ""]]);
+  });
 });

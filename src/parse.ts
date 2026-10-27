@@ -66,3 +66,19 @@ export function buildReport(subjects: SubjectHours[], now: Date): AbsenceReport 
   const totalHours = Math.round(subjects.reduce((sum, s) => sum + s.hours, 0) * 100) / 100;
   return { totalHours, subjects, syncedAt: now.toISOString() };
 }
+
+/**
+ * All `<input type="hidden">` name/value pairs, in document order, duplicates kept
+ * (ASP.NET reads repeated names as a comma-joined value). Attribute order in
+ * Alexia's markup is inconsistent, so nothing here assumes one.
+ */
+export function extractHiddenPairs(html: string): Array<[string, string]> {
+  const pairs: Array<[string, string]> = [];
+  for (const [tag] of html.matchAll(/<input\b[^>]*>/g)) {
+    if (!/type="hidden"/.test(tag)) continue;
+    const name = tag.match(/name="([^"]+)"/)?.[1];
+    if (!name) continue;
+    pairs.push([name, decodeEntities(tag.match(/value="([^"]*)"/)?.[1] ?? "")]);
+  }
+  return pairs;
+}
