@@ -24,7 +24,3 @@ Genera `dist/connector.js`, un único fichero autocontenido (sin `import` ni `re
 ```sh
 bun run ../faltasmas-connectors/scripts/registry-entry.ts <asset-descargado> <url-del-asset>
 ```
-
-## Pendiente
-
-- Cambiar la dependencia `file:../faltasmas-connectors` por la URL de GitHub cuando el repo de contratos esté publicado.

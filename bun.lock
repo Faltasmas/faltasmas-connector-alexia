@@ -5,7 +5,7 @@
     "": {
       "name": "faltasmas-connector-alexia",
       "dependencies": {
-        "@faltasmas/connectors": "file:../faltasmas-connectors",
+        "@faltasmas/connectors": "github:Faltasmas/faltasmas-connectors#2dcb7379c67ad083752ac90ec0706ddde6e69d16",
       },
       "devDependencies": {
         "@types/bun": "latest",
@@ -13,7 +13,7 @@
     },
   },
   "packages": {
-    "@faltasmas/connectors": ["@faltasmas/connectors@file:../faltasmas-connectors", {}],
+    "@faltasmas/connectors": ["@faltasmas/connectors@github:Faltasmas/faltasmas-connectors#2dcb737", {}, "Faltasmas-faltasmas-connectors-2dcb737", "sha512-ucVeKHUXPBJTJiZNjLR4ZXpcreEbVlb5dWsADckCU0/xq3MsZwhuxUc3YhwwSbjt8NkXqJp7MhvqsZljIb4PGg=="],
 
     "@types/bun": ["@types/bun@1.4.4", "", { "dependencies": { "bun-types": "1.4.4" } }, "sha512-9wkRDXUXK124pEnAutE6n/l18j+i9GC5IAHK8TmX/2nlySETmky0OU6yL5U8pW1AoKh++AN9auDCr647BfurjQ=="],
 
