@@ -27,5 +27,4 @@ bun run ../faltasmas-connectors/scripts/registry-entry.ts <asset-descargado> <ur
 
 ## Pendiente
 
-- `src/manifest.ts`: sustituir "Centro pendiente de nombre" por el nombre real del centro (`TODO(owner)`).
 - Cambiar la dependencia `file:../faltasmas-connectors` por la URL de GitHub cuando el repo de contratos esté publicado.

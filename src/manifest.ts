@@ -10,6 +10,6 @@ export const manifest: ConnectorManifest = {
     { key: "password", label: "Contraseña", secret: true },
   ],
   institutions: [
-    { id: "NS2IrX8Iq04%3d", name: "Centro pendiente de nombre" }, // TODO(owner): real centre name
+    { id: "NS2IrX8Iq04%3d", name: "Instituto FP San Antonio" },
   ],
 };
