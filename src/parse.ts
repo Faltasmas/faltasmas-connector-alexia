@@ -13,8 +13,10 @@ const NAMED_ENTITIES: Record<string, string> = {
 
 function decodeEntities(s: string): string {
   return s.replace(/&(?:#(\d+)|#x([0-9a-fA-F]+)|([A-Za-z]+));/g, (m, dec, hex, name) => {
-    if (dec) return String.fromCodePoint(Number(dec));
-    if (hex) return String.fromCodePoint(parseInt(hex, 16));
+    if (dec || hex) {
+      const cp = dec ? Number(dec) : parseInt(hex, 16);
+      return cp <= 0x10ffff ? String.fromCodePoint(cp) : m;
+    }
     return NAMED_ENTITIES[name] ?? m;
   });
 }
@@ -41,18 +43,23 @@ export function parseAbsenceGrid(gridText: string): SubjectHours[] {
   const rows = (grid as { rows?: unknown } | null)?.rows;
   if (!Array.isArray(rows)) throw unexpected("Attendance grid has no rows array");
 
-  return rows.map((row: { cell?: unknown }) => {
+  const out: SubjectHours[] = [];
+  for (const row of rows as { cell?: unknown }[]) {
     const cell = row?.cell;
-    if (!Array.isArray(cell) || typeof cell[3] !== "string" || !cell[3].trim()) {
-      throw unexpected("Attendance grid row has no subject");
-    }
+    if (!Array.isArray(cell)) throw unexpected("Attendance grid row has no cell array");
     const html = typeof cell[5] === "string" ? cell[5] : "";
     const match = html.match(/<span id="spanObs">([^<]*)<\/span>/);
-    const raw = match ? match[1].trim().replace(",", ".") : "0";
-    const hours = /^\d+(\.\d+)?$/.test(raw) ? Number(raw) : NaN;
+    const raw = match ? match[1].trim().replace(",", ".") : "";
+    const hours = raw === "" ? 0 : /^\d+(\.\d+)?$/.test(raw) ? Number(raw) : NaN;
     if (Number.isNaN(hours)) throw unexpected("Attendance grid row has unreadable hours");
-    return { name: decodeEntities(cell[3]).trim(), hours };
-  });
+    const name = typeof cell[3] === "string" ? decodeEntities(cell[3]).trim() : "";
+    if (!name) {
+      if (hours !== 0) throw unexpected("Attendance grid row with hours has no subject");
+      continue;
+    }
+    out.push({ name, hours });
+  }
+  return out;
 }
 
 export function buildReport(subjects: SubjectHours[], now: Date): AbsenceReport {
