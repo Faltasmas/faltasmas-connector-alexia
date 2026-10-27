@@ -1,0 +1,19 @@
+{
+ "page": 1,
+ "total": 1,
+ "records": 1,
+ "rows": [
+  {
+   "id": "0",
+   "cell": [
+    "1",
+    "C1",
+    "x",
+    "Acceso a datos.",
+    "Prof",
+    "<div class=\"tablaObservaciones_00000000-0000-0000-0000-000000000000\" ><span id=\"spanObs\">23,4</span><div class=\"divBotonObservacionesIncidencia\"></div></div>",
+    "0"
+   ]
+  }
+ ]
+}

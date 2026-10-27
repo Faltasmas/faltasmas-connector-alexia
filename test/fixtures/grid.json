@@ -1,0 +1,55 @@
+{
+ "page": 1,
+ "total": 1,
+ "records": 4,
+ "rows": [
+  {
+   "id": "0",
+   "cell": [
+    "1",
+    "C1",
+    "x",
+    "Acceso a datos.",
+    "Prof",
+    "<div class=\"tablaObservaciones_00000000-0000-0000-0000-000000000000\" ><span id=\"spanObs\">5</span><div class=\"divBotonObservacionesIncidencia\"></div></div>",
+    "0"
+   ]
+  },
+  {
+   "id": "1",
+   "cell": [
+    "1",
+    "C1",
+    "x",
+    "Desarrollo de interfaces.",
+    "Prof",
+    "<div class=\"tablaObservaciones_00000000-0000-0000-0000-000000000000\" ><span id=\"spanObs\">14</span><div class=\"divBotonObservacionesIncidencia\"></div></div>",
+    "0"
+   ]
+  },
+  {
+   "id": "2",
+   "cell": [
+    "1",
+    "C1",
+    "x",
+    "Sistemas de gesti\u00f3n empresarial.",
+    "Prof",
+    "<div class=\"tablaObservaciones_00000000-0000-0000-0000-000000000000\" ><div class=\"divBotonObservacionesIncidencia\"></div></div>",
+    "0"
+   ]
+  },
+  {
+   "id": "3",
+   "cell": [
+    "1",
+    "C1",
+    "x",
+    "Principios De Ciberseguridad",
+    "Prof",
+    "<div class=\"tablaObservaciones_00000000-0000-0000-0000-000000000000\" ><span id=\"spanObs\">2</span><div class=\"divBotonObservacionesIncidencia\"></div></div>",
+    "0"
+   ]
+  }
+ ]
+}
