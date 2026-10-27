@@ -1,0 +1,23 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # TODO: package.json depends on "file:../faltasmas-connectors", a sibling repo that is not
+      # published yet. Replace it with the GitHub URL of that repo before this workflow can run in CI.
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun test
+      - run: bun run build
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/connector.js

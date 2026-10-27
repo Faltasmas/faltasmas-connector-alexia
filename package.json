@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": { "test": "bun test",
-    "typecheck": "tsc --noEmit" },
+    "typecheck": "tsc --noEmit",
+    "build": "bun run scripts/build.ts" },
   "dependencies": { "@faltasmas/connectors": "file:../faltasmas-connectors" },
   "devDependencies": { "@types/bun": "latest" }
 }
