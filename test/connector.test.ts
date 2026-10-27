@@ -61,8 +61,8 @@ describe("alexia connector", () => {
   test("returns a report for a full successful run", async () => {
     const { http, requests } = fakeHttp(fullScript());
     const report = await fetchAbsences(ctx(http));
-    expect(report.totalHours).toBeGreaterThan(0);
-    expect(report.subjects.length).toBeGreaterThan(0);
+    expect(report.totalHours).toBe(21);
+    expect(report.subjects).toHaveLength(4);
     expect(requests[0].url).toContain(`LogOn.aspx?key=${KEY}`);
     expect(requests).toHaveLength(9);
     const post = requests[7];
@@ -88,6 +88,17 @@ describe("alexia connector", () => {
     await fetchAbsences(ctx(http));
     for (const r of requests) expect(new URL(r.url).host).toBe("web2.alexiaedu.com");
   });
+
+  test.each(["https://evil.example/x", "//evil.example/x"])(
+    "a RutaHome pointing to another host (%s) never causes a request to it",
+    async (ruta) => {
+      const validar = `{"d":{"OK":true,"RutaHome":${JSON.stringify(ruta)},"OKCuenta":true}}`;
+      const { http, requests } = fakeHttp([logonPage, `{"d":""}`, ROLES_OK, validar]);
+      expect(await code(fetchAbsences(ctx(http)))).toBe("unexpected_response");
+      expect(requests).toHaveLength(4);
+      for (const r of requests) expect(new URL(r.url).host).toBe("web2.alexiaedu.com");
+    },
+  );
 
   test("never sends a Cookie header or sec-ch/Sec-Fetch headers", async () => {
     const { http, requests } = fakeHttp(fullScript());

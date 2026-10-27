@@ -12,16 +12,17 @@ bun test
 bun run build
 ```
 
-Genera `dist/connector.js`, un único fichero autocontenido (sin `import` ni `require`) que expone el global `FaltasmasConnector`.
+Genera `dist/connector.js`, un único fichero autocontenido (sin `import` ni `require`) que asigna `globalThis.FaltasmasConnector` al namespace del módulo; el conector está en `FaltasmasConnector.connector` (con `.manifest` y `.fetchAbsences`). El contrato completo del cargador está en el README de `faltasmas-connectors`.
 
 ## Publicar una versión
 
 1. Actualiza `version` en `src/manifest.ts` y `package.json`.
 2. Crea y sube la etiqueta `vX.Y.Z`; el workflow `release.yml` ejecuta los tests, compila y adjunta `connector.js` a la release.
-3. Genera la entrada del registro con el script del repo de contratos y añádela a su `registry.json`:
+3. Descarga el asset publicado de la release y calcula su hash sobre esa descarga (no sobre el fichero local); compáralo con el de la compilación local (`sha256sum dist/connector.js`) y solo si coinciden añade la entrada al registro.
+4. Genera la entrada del registro con el script del repo de contratos (lee el manifest del propio bundle) y añádela a su `registry.json`:
 
 ```sh
-bun run ../faltasmas-connectors/scripts/registry-entry.ts dist/connector.js manifest.json <url-del-asset>
+bun run ../faltasmas-connectors/scripts/registry-entry.ts <asset-descargado> <url-del-asset>
 ```
 
 ## Pendiente

@@ -62,7 +62,15 @@ describe("parseAbsenceGrid", () => {
   test("parseAbsenceGrid skips a subject-less row with 0 or absent hours", () => {
     expect(parseAbsenceGrid(grid("", "<div></div>"))).toEqual([]);
     expect(parseAbsenceGrid(grid("", '<span id="spanObs">0</span>'))).toEqual([]);
-    expect(parseAbsenceGrid(JSON.stringify({ rows: [{ cell: ["a"] }] }))).toEqual([]);
+  });
+  test("parseAbsenceGrid throws unexpected_response for a row with fewer than 6 cells", () => {
+    expect(code(() => parseAbsenceGrid(JSON.stringify({ rows: [{ cell: ["a"] }] })))).toBe("unexpected_response");
+    expect(code(() => parseAbsenceGrid(JSON.stringify({ rows: [{ cell: ["", "", "", "X", ""] }] })))).toBe("unexpected_response");
+  });
+  test("parseAbsenceGrid throws when spanObs is present but the markup drifted", () => {
+    expect(code(() => parseAbsenceGrid(grid("X", '<span class="a" id="spanObs">3</span>')))).toBe("unexpected_response");
+    expect(code(() => parseAbsenceGrid(grid("X", "<span id='spanObs'>3</span>")))).toBe("unexpected_response");
+    expect(code(() => parseAbsenceGrid(grid("X", '<span id="spanObs">3<b>1</b></span>')))).toBe("unexpected_response");
   });
   test("parseAbsenceGrid throws on a subject-less row with non-zero hours", () => {
     expect(code(() => parseAbsenceGrid(grid("", '<span id="spanObs">3</span>')))).toBe("unexpected_response");

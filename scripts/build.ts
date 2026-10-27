@@ -1,3 +1,6 @@
+// Builds dist/connector.js: one IIFE that sets globalThis.FaltasmasConnector to the module
+// namespace of src/index.ts; the connector is at FaltasmasConnector.connector.
+// The loader contract lives in ../faltasmas-connectors/README.md.
 import { mkdirSync } from "node:fs";
 
 const GLOBAL_NAME = "FaltasmasConnector";

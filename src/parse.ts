@@ -47,8 +47,11 @@ export function parseAbsenceGrid(gridText: string): SubjectHours[] {
   for (const row of rows as { cell?: unknown }[]) {
     const cell = row?.cell;
     if (!Array.isArray(cell)) throw unexpected("Attendance grid row has no cell array");
+    if (cell.length < 6) throw unexpected("Attendance grid row has fewer than 6 cells");
     const html = typeof cell[5] === "string" ? cell[5] : "";
     const match = html.match(/<span id="spanObs">([^<]*)<\/span>/);
+    // No span at all means 0 hours; a span we cannot read means the markup drifted.
+    if (!match && html.includes("spanObs")) throw unexpected("Attendance grid hours markup changed");
     const raw = match ? match[1].trim().replace(",", ".") : "";
     const hours = raw === "" ? 0 : /^\d+(\.\d+)?$/.test(raw) ? Number(raw) : NaN;
     if (Number.isNaN(hours)) throw unexpected("Attendance grid row has unreadable hours");
